@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Assignments - CampusConnect{% endblock %}
+{% block page_title %}Assignments{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+ 
+{% block content %}
+<div class="card">
+  <div class="card-title">Pending Assignments</div>
+  {% if assignments %}
+    {% for assignment in assignments %}
+    <div style="display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #e2e8f0;">
+      <input type="checkbox" style="width: 14px; height: 14px; accent-color: #1a56db;">
+      <div style="flex: 1;">
+        <div style="font-size: 12px; font-weight: 600;">{{ assignment.title }}</div>
+        <div style="font-size: 10px; color: #64748b;">{{ assignment.subject }}</div>
+      </div>
+      <span class="badge badge-green">Due: {{ assignment.due_date.strftime('%d %b') if assignment.due_date else 'N/A' }}</span>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div style="padding: 16px; text-align: center; color: #64748b;">No assignments</div>
+  {% endif %}
+</div>
+{% endblock %}

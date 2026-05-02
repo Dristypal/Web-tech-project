@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Post Notice - CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#f0f4f9;color:#1a2340;min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding:32px 20px}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;}
+h1{font-size:26px;font-weight:800;}
+.subtitle{color:#78909c;font-size:14px;margin-top:3px;}
+.back-btn{display:flex;align-items:center;gap:8px;color:#607898;text-decoration:none;font-size:14px;font-weight:500;padding:9px 18px;background:#fff;border-radius:10px;border:1px solid #e2eaf4;transition:.2s;}
+.back-btn:hover{background:#f0f4f9;color:#1565C0;}
+.grid{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;}
+.card{background:#fff;border-radius:18px;border:1px solid #e2eaf4;box-shadow:0 2px 16px rgba(21,101,192,0.07);overflow:hidden;}
+.card-head{padding:18px 22px;border-bottom:1px solid #f0f4f9;display:flex;align-items:center;gap:10px;}
+.card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.card-head h2{font-size:16px;font-weight:700;}
+.card-body{padding:24px;}
+.form-group{margin-bottom:18px;}
+.form-label{display:block;font-size:11px;font-weight:700;color:#78909c;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;}
+.form-control{width:100%;padding:12px 14px;background:#f8fafd;border:1.5px solid #e2eaf4;border-radius:10px;font-size:14px;color:#1a2340;font-family:'Outfit',sans-serif;outline:none;transition:.2s;}
+.form-control:focus{border-color:#1565C0;background:#fff;box-shadow:0 0 0 3px rgba(21,101,192,0.1);}
+textarea.form-control{min-height:120px;resize:vertical;}
+.category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.cat-btn{padding:10px 8px;border:1.5px solid #e2eaf4;border-radius:10px;background:#f8fafd;cursor:pointer;font-family:'Outfit',sans-serif;font-size:12px;font-weight:600;color:#607898;text-align:center;transition:.2s;}
+.cat-btn:hover{border-color:#1565C0;color:#1565C0;background:#E3F2FD;}
+.cat-btn.selected{border-color:#1565C0;color:#1565C0;background:#E3F2FD;}
+.urgent-toggle{display:flex;align-items:center;gap:12px;padding:14px;background:#FFEBEE;border-radius:12px;border:1.5px solid #FFCDD2;cursor:pointer;margin-bottom:18px;}
+.urgent-toggle input{width:18px;height:18px;accent-color:#E53935;cursor:pointer;}
+.urgent-label{font-size:13px;font-weight:600;color:#C62828;}
+.urgent-sub{font-size:12px;color:#E57373;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 24px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:.22s;text-decoration:none;width:100%;justify-content:center;}
+.btn-primary{background:linear-gradient(135deg,#1565C0,#1976D2);color:#fff;box-shadow:0 4px 16px rgba(21,101,192,0.3);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(21,101,192,0.4);}
+.preview-card{border-left:4px solid #1565C0;padding:14px 16px;background:#f8fafd;border-radius:0 12px 12px 0;margin-bottom:12px;display:none;}
+.preview-title{font-size:15px;font-weight:700;color:#1a2340;margin-bottom:6px;}
+.preview-content{font-size:13px;color:#607898;line-height:1.6;}
+.preview-meta{font-size:11px;color:#b0bec5;margin-top:8px;}
+.notif-preview{background:#fff;border:1.5px solid #e2eaf4;border-radius:14px;padding:16px;margin-top:16px;}
+.notif-preview-head{font-size:12px;font-weight:600;color:#78909c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.mock-notif{display:flex;align-items:flex-start;gap:10px;padding:12px;background:#E3F2FD;border-radius:10px;border-left:3px solid #1565C0;}
+.mock-icon{width:34px;height:34px;border-radius:9px;background:#1565C0;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;flex-shrink:0;}
+.mock-title{font-size:13px;font-weight:700;color:#1a2340;margin-bottom:3px;}
+.mock-msg{font-size:11px;color:#607898;}
+.who-notified{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
+.who-item{display:flex;align-items:center;gap:10px;padding:10px 14px;background:#f8fafd;border-radius:10px;border:1px solid #e2eaf4;}
+.who-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;}
+.who-label{font-size:13px;font-weight:500;}
+.who-count{margin-left:auto;font-size:12px;font-weight:600;padding:2px 10px;border-radius:20px;}
+.char-count{font-size:11px;color:#b0bec5;text-align:right;margin-top:4px;}
+.alert{padding:12px 16px;border-radius:10px;margin-bottom:16px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px;}
+.alert-success{background:#E0F2F1;border:1px solid #80CBC4;color:#00695C;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}.category-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top-bar">
+    <div>
+      <h1><i class="fa-solid fa-bullhorn" style="color:#1565C0;margin-right:10px;"></i>Post Notice</h1>
+      <div class="subtitle">Notify all students instantly with real-time alerts</div>
+    </div>
+    <a href="{{ url_for('teacher_dashboard') }}" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Dashboard</a>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}{% for cat,msg in messages %}
+    <div class="alert alert-{{ cat }}"><i class="fa-solid fa-circle-check"></i> {{ msg }}</div>
+    {% endfor %}{% endif %}
+  {% endwith %}
+
+  <div class="grid">
+
+    <!-- Notice Form -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#E3F2FD;color:#1565C0;"><i class="fa-solid fa-pen-to-square"></i></div>
+        <h2>Write Notice</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('teacher_notices') }}" id="notice-form">
+
+          <div class="form-group">
+            <label class="form-label">Notice Title</label>
+            <input type="text" name="title" id="notif-title" class="form-control"
+                   placeholder="e.g. Mid-Semester Exam Schedule" required
+                   oninput="updatePreview()"/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <div class="category-grid">
+              {% for cat, icon, color in [
+                ('General','fa-bell','#1565C0'),
+                ('Exams','fa-file-pen','#FB8C00'),
+                ('Holiday','fa-umbrella-beach','#00897B'),
+                ('Placement','fa-briefcase','#6A1B9A'),
+                ('Sports','fa-trophy','#0091EA'),
+                ('Events','fa-calendar-star','#E53935')
+              ] %}
+              <div class="cat-btn {% if loop.first %}selected{% endif %}"
+                   onclick="selectCat(this,'{{ cat }}')"
+                   data-cat="{{ cat }}">
+                <i class="fa-solid {{ icon }}" style="color:{{ color }};display:block;font-size:18px;margin-bottom:4px;"></i>
+                {{ cat }}
+              </div>
+              {% endfor %}
+            </div>
+            <input type="hidden" name="category" id="cat-input" value="General"/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Content</label>
+            <textarea name="content" id="notif-content" class="form-control"
+                      placeholder="Write the full notice content here..."
+                      oninput="updatePreview();updateChar()"
+                      required></textarea>
+            <div class="char-count"><span id="char-count">0</span> / 500 characters</div>
+          </div>
+
+          <label class="urgent-toggle">
+            <input type="checkbox" name="is_urgent" id="urgent-cb" onchange="updatePreview()"/>
+            <div>
+              <div class="urgent-label"><i class="fa-solid fa-triangle-exclamation" style="margin-right:6px;"></i>Mark as Urgent</div>
+              <div class="urgent-sub">Students will see a red URGENT badge</div>
+            </div>
+          </label>
+
+          <button type="submit" class="btn btn-primary" id="submit-btn">
+            <i class="fa-solid fa-paper-plane"></i>
+            Post Notice & Notify Students
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Preview + Info -->
+    <div style="display:flex;flex-direction:column;gap:18px;">
+
+      <!-- Live Preview -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#E8F5E9;color:#00897B;"><i class="fa-solid fa-eye"></i></div>
+          <h2>Live Preview</h2>
+        </div>
+        <div class="card-body">
+          <div id="preview-card" class="preview-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+              <div class="preview-title" id="prev-title">Your notice title</div>
+              <span id="prev-cat" style="background:#E3F2FD;color:#1565C0;font-size:11px;font-weight:600;padding:2px 10px;border-radius:20px;">General</span>
+            </div>
+            <div class="preview-content" id="prev-content">Your notice content will appear here...</div>
+            <div class="preview-meta">
+              <i class="fa-regular fa-user" style="margin-right:4px;"></i>{{ current_user.name }}
+              &nbsp;&bull;&nbsp;
+              <i class="fa-regular fa-clock" style="margin-right:4px;"></i>Just now
+            </div>
+          </div>
+
+          <div class="notif-preview">
+            <div class="notif-preview-head">
+              <i class="fa-solid fa-bell" style="color:#1565C0;"></i>
+              Student will receive this notification:
+            </div>
+            <div class="mock-notif">
+              <div class="mock-icon"><i class="fa-solid fa-bullhorn"></i></div>
+              <div>
+                <div class="mock-title" id="mock-title">Notice title here</div>
+                <div class="mock-msg" id="mock-msg">Notice content preview...</div>
+                <div style="font-size:10px;color:#b0bec5;margin-top:4px;">by {{ current_user.name }} &bull; Just now</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Who gets notified -->
+      <div class="card">
+        <div class="card-head">
+          <div class="card-icon" style="background:#FFF3E0;color:#FB8C00;"><i class="fa-solid fa-users"></i></div>
+          <h2>Who Gets Notified</h2>
+        </div>
+        <div class="card-body" style="padding:16px;">
+          <div class="who-notified">
+            <div class="who-item">
+              <div class="who-icon" style="background:#E3F2FD;color:#1565C0;"><i class="fa-solid fa-user-graduate"></i></div>
+              <div class="who-label">All Students</div>
+              <span class="who-count" style="background:#E3F2FD;color:#1565C0;">{{ total_students }} users</span>
+            </div>
+            <div class="who-item">
+              <div class="who-icon" style="background:#E8F5E9;color:#00897B;"><i class="fa-solid fa-mobile-screen"></i></div>
+              <div class="who-label">Real-time Pop-up</div>
+              <span class="who-count" style="background:#E8F5E9;color:#00897B;">Instant</span>
+            </div>
+            <div class="who-item">
+              <div class="who-icon" style="background:#EDE7F6;color:#6A1B9A;"><i class="fa-solid fa-database"></i></div>
+              <div class="who-label">Saved to Notice Board</div>
+              <span class="who-count" style="background:#EDE7F6;color:#6A1B9A;">Permanent</span>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;padding:12px;background:#f8fafd;border-radius:10px;border:1px solid #e2eaf4;">
+            <div style="font-size:12px;font-weight:700;color:#78909c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;">
+              <i class="fa-solid fa-bolt" style="color:#FB8C00;margin-right:4px;"></i>How it works
+            </div>
+            <div style="font-size:13px;color:#607898;display:flex;flex-direction:column;gap:6px;">
+              <div><span style="color:#1565C0;font-weight:600;">1.</span> You post the notice</div>
+              <div><span style="color:#1565C0;font-weight:600;">2.</span> SocketIO broadcasts instantly</div>
+              <div><span style="color:#1565C0;font-weight:600;">3.</span> Students see popup alert immediately</div>
+              <div><span style="color:#1565C0;font-weight:600;">4.</span> Notice saved to board permanently</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+function selectCat(el, cat) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('cat-input').value = cat;
+  updatePreview();
+}
+
+function updatePreview() {
+  const title   = document.getElementById('notif-title').value || 'Your notice title';
+  const content = document.getElementById('notif-content').value || 'Your notice content will appear here...';
+  const cat     = document.getElementById('cat-input').value;
+  const urgent  = document.getElementById('urgent-cb').checked;
+
+  document.getElementById('preview-card').style.display = 'block';
+  document.getElementById('prev-title').textContent  = title;
+  document.getElementById('prev-content').textContent = content;
+  document.getElementById('prev-cat').textContent     = cat;
+
+  if (urgent) {
+    document.getElementById('preview-card').style.borderLeftColor = '#E53935';
+    document.getElementById('prev-cat').style.background = '#FFEBEE';
+    document.getElementById('prev-cat').style.color = '#E53935';
+    document.getElementById('prev-cat').textContent = '⚠ URGENT';
+  } else {
+    document.getElementById('preview-card').style.borderLeftColor = '#1565C0';
+    document.getElementById('prev-cat').style.background = '#E3F2FD';
+    document.getElementById('prev-cat').style.color = '#1565C0';
+    document.getElementById('prev-cat').textContent = cat;
+  }
+
+  document.getElementById('mock-title').textContent = title.length > 40 ? title.substring(0,40)+'...' : title;
+  document.getElementById('mock-msg').textContent   = content.length > 60 ? content.substring(0,60)+'...' : content;
+}
+
+function updateChar() {
+  const len = document.getElementById('notif-content').value.length;
+  document.getElementById('char-count').textContent = len;
+  document.getElementById('char-count').style.color = len > 450 ? '#E53935' : '#b0bec5';
+}
+
+document.getElementById('notice-form').addEventListener('submit', function() {
+  const btn = document.getElementById('submit-btn');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Posting & Notifying...';
+  btn.disabled = true;
+});
+
+updatePreview();
+</script>
+</body>
+</html>

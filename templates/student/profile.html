@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+ 
+{% block title %}My Profile - CampusConnect{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+ 
+{% block content %}
+<div class="grid2">
+  <div>
+    <div class="profile-card">
+      <div class="p-avatar">{{ current_user.name[0] }}{{ current_user.name.split()[-1][0] if current_user.name.split()|length > 1 else '' }}</div>
+      <div class="p-name">{{ current_user.name }}</div>
+      <div class="p-info">Roll No: {{ student.roll_no if student else 'N/A' }} • {{ student.branch if student else '' }}</div>
+      <div class="p-info">Semester {{ student.semester if student else '' }} • {{ student.batch if student else '' }} Batch</div>
+      <div class="p-stats">
+        <div class="p-stat">
+          <div class="p-stat-val">{{ "%.1f" % (student.cgpa or 0) }}</div>
+          <div class="p-stat-label">CGPA</div>
+        </div>
+        <div class="p-stat">
+          <div class="p-stat-val">87%</div>
+          <div class="p-stat-label">Attendance</div>
+        </div>
+        <div class="p-stat">
+          <div class="p-stat-val">72</div>
+          <div class="p-stat-label">Credits</div>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="card">
+      <div class="card-title">Skills & Achievements</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px;">
+        <span class="badge badge-blue">Python</span>
+        <span class="badge badge-blue">Web Dev</span>
+        <span class="badge badge-blue">SQL</span>
+        <span class="badge badge-blue">DSA</span>
+        <span class="badge badge-blue">React</span>
+      </div>
+      <div style="font-size: 11px; color: #64748b; line-height: 1.8;">
+        🏆 Hackathon Winner 2024<br>
+        📜 AWS Cloud Certified<br>
+        ⭐ Dean's List — Sem 3
+      </div>
+    </div>
+  </div>
+ 
+  <div class="card">
+    <div class="card-title">Personal Information</div>
+    <div style="font-size: 11px;">
+      <div style="display: flex; padding: 7px 0; border-bottom: 1px solid #e2e8f0; gap: 10px;">
+        <span style="color: #64748b; width: 110px; flex-shrink: 0;">Full Name</span>
+        <span style="font-weight: 500; color: #1e293b;">{{ current_user.name }}</span>
+      </div>
+      <div style="display: flex; padding: 7px 0; border-bottom: 1px solid #e2e8f0; gap: 10px;">
+        <span style="color: #64748b; width: 110px; flex-shrink: 0;">Email</span>
+        <span style="font-weight: 500; color: #1e293b;">{{ current_user.email }}</span>
+      </div>
+      <div style="display: flex; padding: 7px 0; border-bottom: 1px solid #e2e8f0; gap: 10px;">
+        <span style="color: #64748b; width: 110px; flex-shrink: 0;">Roll No</span>
+        <span style="font-weight: 500; color: #1e293b;">{{ student.roll_no if student else 'N/A' }}</span>
+      </div>
+      <div style="display: flex; padding: 7px 0; border-bottom: 1px solid #e2e8f0; gap: 10px;">
+        <span style="color: #64748b; width: 110px; flex-shrink: 0;">Branch</span>
+        <span style="font-weight: 500; color: #1e293b;">{{ student.branch if student else 'N/A' }}</span>
+      </div>
+      <div style="display: flex; padding: 7px 0; border-bottom: 1px solid #e2e8f0; gap: 10px;">
+        <span style="color: #64748b; width: 110px; flex-shrink: 0;">Semester</span>
+        <span style="font-weight: 500; color: #1e293b;">{{ student.semester if student else 'N/A' }}</span>
+      </div>
+      <div style="display: flex; padding: 7px 0; border-bottom: 1px solid #e2e8f0; gap: 10px;">
+        <span style="color: #64748b; width: 110px; flex-shrink: 0;">Phone</span>
+        <span style="font-weight: 500; color: #1e293b;">{{ student.phone if student and student.phone else 'Not added' }}</span>
+      </div>
+      <div style="display: flex; padding: 7px 0; border-bottom: 1px solid #e2e8f0; gap: 10px;">
+        <span style="color: #64748b; width: 110px; flex-shrink: 0;">Blood Group</span>
+        <span style="font-weight: 500; color: #1e293b;">{{ student.blood_group if student and student.blood_group else 'Not added' }}</span>
+      </div>
+      <div style="display: flex; padding: 7px 0; border-bottom: 1px solid #e2e8f0; gap: 10px;">
+        <span style="color: #64748b; width: 110px; flex-shrink: 0;">Father Name</span>
+        <span style="font-weight: 500; color: #1e293b;">{{ student.father_name if student and student.father_name else 'Not added' }}</span>
+      </div>
+      <div style="display: flex; padding: 7px 0; gap: 10px;">
+        <span style="color: #64748b; width: 110px; flex-shrink: 0;">Address</span>
+        <span style="font-weight: 500; color: #1e293b;">{{ student.address if student and student.address else 'Not added' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

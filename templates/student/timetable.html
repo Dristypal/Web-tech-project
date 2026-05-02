@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Timetable - CampusConnect{% endblock %}
+{% block page_title %}Timetable{% endblock %}
+ 
+{% block content %}
+<div class="card">
+  <div class="card-title">Weekly Schedule — Semester {{ student.semester if student else 'N/A' }}</div>
+  <table>
+    <tr>
+      <th>Time</th>
+      <th>Monday</th>
+      <th>Tuesday</th>
+      <th>Wednesday</th>
+      <th>Thursday</th>
+      <th>Friday</th>
+    </tr>
+    <tr>
+      <td style="font-weight: 600; color: #1a56db;">9:00</td>
+      <td>Data Structures</td>
+      <td>Operating Systems</td>
+      <td>DBMS</td>
+      <td>Computer Networks</td>
+      <td>DS Lab</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600; color: #1a56db;">10:30</td>
+      <td>Operating Systems</td>
+      <td>DBMS</td>
+      <td>Computer Networks</td>
+      <td>Maths IV</td>
+      <td>Operating Systems</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600; color: #1a56db;">12:00</td>
+      <td style="color: #64748b;">—</td>
+      <td>DS Lab</td>
+      <td style="color: #64748b;">—</td>
+      <td>DBMS Lab</td>
+      <td style="color: #64748b;">—</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600; color: #1a56db;">2:00</td>
+      <td>Computer Networks</td>
+      <td>Maths IV</td>
+      <td>Operating Systems</td>
+      <td style="color: #64748b;">—</td>
+      <td>Project</td>
+    </tr>
+    <tr>
+      <td style="font-weight: 600; color: #1a56db;">3:30</td>
+      <td>Maths IV</td>
+      <td style="color: #64748b;">—</td>
+      <td>Data Structures</td>
+      <td>Project</td>
+      <td style="color: #64748b;">—</td>
+    </tr>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Student Profile{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-title">{{ user.name if user else 'Student' }} — Profile</div>
+  <p><strong>Roll No:</strong> {{ student.roll_no }}</p>
+  <p><strong>Branch:</strong> {{ student.branch }}</p>
+  <p><strong>Semester:</strong> {{ student.semester }}</p>
+  <h3>Fees</h3>
+  <ul>
+    {% for f in fees %}
+    <li>{{ f.description }} — {{ f.amount }} — {{ f.status }} — <a href="/admin/fees/{{ f.id }}">Details</a></li>
+    {% endfor %}
+  </ul>
+  <h3>Attendance</h3>
+  <ul>
+    {% for a in attendance[:20] %}
+    <li>{{ a.date }} — {{ a.subject }} — {{ a.status }}</li>
+    {% endfor %}
+  </ul>
+  <h3>Results</h3>
+  <ul>
+    {% for r in results[:10] %}
+    <li>{{ r.subject }} — {{ r.internal }} / {{ r.external }} — {{ r.grade }}</li>
+    {% endfor %}
+  </ul>
+  <a class="btn" href="/admin">Back</a>
+</div>
+{% endblock %}

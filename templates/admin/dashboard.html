@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel - CampusConnect{% endblock %}
+{% block page_title %}Admin Dashboard{% endblock %}
+ 
+{% block content %}
+<div class="stats">
+  <div class="stat-card">
+    <div class="stat-label">Total Students</div>
+    <div class="stat-val">{{ students|length }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Faculty</div>
+    <div class="stat-val">86</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Courses</div>
+    <div class="stat-val">24</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Departments</div>
+    <div class="stat-val">8</div>
+  </div>
+</div>
+ 
+<div class="card">
+  <div class="card-title">Recent Student Registrations</div>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Roll No</th>
+      <th>Branch</th>
+      <th>Semester</th>
+      <th>Status</th>
+    </tr>
+  {% for student in students[:10] %}
+    <tr>
+      <td>{{ student.user.name if student.user else 'Unknown' }}</td>
+      <td>{{ student.roll_no }}</td>
+      <td>{{ student.branch }}</td>
+      <td>{{ student.semester }}</td>
+      <td><span class="badge badge-green">Active</span></td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="card">
+  <div class="card-title">Pending Fees</div>
+  <table>
+    <tr><th>Student</th><th>Description</th><th>Amount</th><th>Action</th></tr>
+    {% for f in pending_fees_list %}
+    <tr>
+      <td><a href="/admin/student/{{ f.student_id }}">{{ f.student.user.name if f.student and f.student.user else 'Unknown' }}</a></td>
+      <td><a href="/admin/fees/{{ f.id }}">{{ f.description }}</a></td>
+      <td>{{ f.amount }}</td>
+      <td>
+        <form method="post" action="/admin/fees/mark_paid/{{ f.id }}">
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+          <button class="btn btn-small">Mark Paid</button>
+        </form>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No pending fees</td></tr>
+    {% endfor %}
+  </table>
+  <div class="card-footer">Showing page {{ fees_page }} — total {{ pending_fees_count }} pending fees
+    <div style="float:right">
+      {% if fees_page > 1 %}
+        <a class="card-link" href="{{ url_for('admin', fees_page=fees_page-1, fees_per=fees_per) }}">← Prev</a>
+      {% endif %}
+      {% if pending_fees_count > fees_page * fees_per %}
+        <a class="card-link" href="{{ url_for('admin', fees_page=fees_page+1, fees_per=fees_per) }}">Next →</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Recent Payments</div>
+  <table>
+    <tr><th>Student</th><th>Description</th><th>Amount</th><th>Date</th></tr>
+    {% for p in recent_payments %}
+    <tr>
+      <td><a href="/admin/student/{{ p.student_id }}">{{ p.student.user.name if p.student and p.student.user else 'Unknown' }}</a></td>
+      <td><a href="/admin/fees/{{ p.id }}">{{ p.description }}</a></td>
+      <td>{{ p.amount }}</td>
+      <td>{{ p.paid_on or '—' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No recent payments</td></tr>
+    {% endfor %}
+  </table>
+  <div class="card-footer">Showing page {{ payments_page }} — total {{ recent_payments_count }} payments
+    <div style="float:right">
+      {% if payments_page > 1 %}
+        <a class="card-link" href="{{ url_for('admin', payments_page=payments_page-1, payments_per=payments_per) }}">← Prev</a>
+      {% endif %}
+      {% if recent_payments_count > payments_page * payments_per %}
+        <a class="card-link" href="{{ url_for('admin', payments_page=payments_page+1, payments_per=payments_per) }}">Next →</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-title">Teacher Summaries</div>
+  <table>
+    <tr><th>Name</th><th>Email</th><th>Notices Posted</th></tr>
+    {% for t in teacher_summaries %}
+    <tr>
+      <td>{{ t.name }}</td>
+      <td>{{ t.email }}</td>
+      <td>{{ t.notices }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="3">No teachers found</td></tr>
+    {% endfor %}
+  </table>
+</div>
+
+<div class="card">
+  <div class="card-title">Attendance Issues (below 75%)</div>
+  <table>
+    <tr><th>Student</th><th>Present</th><th>Total</th><th>%</th></tr>
+    {% for it in attendance_issues %}
+    <tr>
+      <td>{{ it.student }}</td>
+      <td>{{ it.present }}</td>
+      <td>{{ it.total }}</td>
+      <td>{{ it.pct }}%</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="4">No attendance issues</td></tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

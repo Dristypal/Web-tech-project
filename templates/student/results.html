@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Results - CampusConnect{% endblock %}
+{% block page_title %}Results{% endblock %}
+ 
+{% block content %}
+<div class="stats" style="grid-template-columns: repeat(4, 1fr)">
+  <div class="stat-card">
+    <div class="stat-label">CGPA</div>
+    <div class="stat-val" style="color: #1a56db">{{ "%.1f" % (student.cgpa or 0) }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Sem 4 SGPA</div>
+    <div class="stat-val">8.7</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Credits Earned</div>
+    <div class="stat-val">72</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Rank</div>
+    <div class="stat-val" style="color: #10b981">12</div>
+  </div>
+</div>
+ 
+<div class="card">
+  <div class="card-title">Semester 4 Results</div>
+  <table>
+    <tr>
+      <th>Subject</th>
+      <th>Internal</th>
+      <th>External</th>
+      <th>Total</th>
+      <th>Grade</th>
+    </tr>
+    <tr>
+      <td>Data Structures</td>
+      <td>28/30</td>
+      <td>62/70</td>
+      <td><b>90/100</b></td>
+      <td><span class="badge badge-green">O</span></td>
+    </tr>
+    <tr>
+      <td>Operating Systems</td>
+      <td>25/30</td>
+      <td>58/70</td>
+      <td><b>83/100</b></td>
+      <td><span class="badge badge-blue">A+</span></td>
+    </tr>
+    <tr>
+      <td>DBMS</td>
+      <td>27/30</td>
+      <td>60/70</td>
+      <td><b>87/100</b></td>
+      <td><span class="badge badge-green">O</span></td>
+    </tr>
+    <tr>
+      <td>Computer Networks</td>
+      <td>22/30</td>
+      <td>55/70</td>
+      <td><b>77/100</b></td>
+      <td><span class="badge badge-blue">A</span></td>
+    </tr>
+    <tr>
+      <td>Maths IV</td>
+      <td>24/30</td>
+      <td>56/70</td>
+      <td><b>80/100</b></td>
+      <td><span class="badge badge-blue">A+</span></td>
+    </tr>
+  </table>
+</div>
+{% endblock %}

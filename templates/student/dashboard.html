@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- Welcome Banner -->
+<div style="background:linear-gradient(135deg,#0D47A1,#1565C0 60%,#0091EA);border-radius:18px;padding:28px 32px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;">
+  <h2 style="font-size:24px;font-weight:700;font-family:'Sora',sans-serif;position:relative;z-index:1;">
+    Welcome back, {{ current_user.name.split()[0] }}!
+  </h2>
+  <p style="opacity:0.75;margin-top:6px;font-size:15px;position:relative;z-index:1;">
+    {% if current_user.profile %}
+      {{ current_user.profile.department }} &bull; Semester {{ current_user.profile.semester }}
+    {% else %}
+      Welcome to Campus Connect
+    {% endif %}
+  </p>
+  <div style="display:flex;gap:12px;margin-top:20px;position:relative;z-index:1;flex-wrap:wrap;">
+    <a href="{{ url_for('attendance') }}" class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);">
+      <i class="fa-solid fa-clipboard-check"></i> Attendance
+    </a>
+    <a href="{{ url_for('results') }}" class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);">
+      <i class="fa-solid fa-trophy"></i> Results
+    </a>
+    <a href="{{ url_for('timetable') }}" class="btn" style="background:rgba(255,255,255,0.15);color:#fff;border:1px solid rgba(255,255,255,0.3);">
+      <i class="fa-solid fa-calendar-days"></i> Timetable
+    </a>
+  </div>
+</div>
+
+<!-- Stat Cards -->
+<div class="stat-grid">
+  <div class="stat-card blue">
+    <div class="stat-icon blue"><i class="fa-solid fa-clipboard-check"></i></div>
+    <div class="stat-info">
+      <p class="stat-label">Attendance</p>
+      <p class="stat-value">{{ att_pct }}%</p>
+      <p class="stat-sub">{{ present }} / {{ total_att }} classes</p>
+    </div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-icon green"><i class="fa-solid fa-book-open"></i></div>
+    <div class="stat-info">
+      <p class="stat-label">Enrolled Courses</p>
+      <p class="stat-value">6</p>
+      <p class="stat-sub">This semester</p>
+    </div>
+  </div>
+  <div class="stat-card orange">
+    <div class="stat-icon orange"><i class="fa-solid fa-credit-card"></i></div>
+    <div class="stat-info">
+      <p class="stat-label">Fees Pending</p>
+      <p class="stat-value">{{ fees_due }}</p>
+      <p class="stat-sub"><a href="{{ url_for('fees') }}" style="color:#FB8C00;">Pay now</a></p>
+    </div>
+  </div>
+  <div class="stat-card purple">
+    <div class="stat-icon purple"><i class="fa-solid fa-trophy"></i></div>
+    <div class="stat-info">
+      <p class="stat-label">Latest SGPA</p>
+      <p class="stat-value">8.4</p>
+      <p class="stat-sub">Previous semester</p>
+    </div>
+  </div>
+</div>
+
+<!-- Notices + Results -->
+<div class="grid-2" style="margin-top:0;">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#E3F2FD;color:#1565C0;"><i class="fa-solid fa-bullhorn"></i></div>
+      <h3>Recent Notices</h3>
+      <a href="{{ url_for('notices') }}" class="btn btn-outline btn-sm" style="margin-left:auto;">View All</a>
+    </div>
+    <div class="card-body" style="padding:16px;">
+      {% for n in notices %}
+      <div class="notice-card {% if n.is_urgent %}urgent{% elif n.category == 'Exam' %}exam{% endif %}">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
+          <h4>{{ n.title }}</h4>
+          <span class="badge {% if n.is_urgent %}badge-red{% elif n.category == 'Exam' %}badge-orange{% else %}badge-blue{% endif %}">{{ n.category }}</span>
+        </div>
+        <p>{{ n.content[:100] }}{% if n.content|length > 100 %}...{% endif %}</p>
+        <p class="notice-meta"><i class="fa-regular fa-clock"></i> {{ n.created_at.strftime('%d %b %Y') }}</p>
+      </div>
+      {% else %}
+      <p style="color:#78909c;text-align:center;padding:20px;">No notices yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#E8F5E9;color:#00897B;"><i class="fa-solid fa-chart-bar"></i></div>
+      <h3>Recent Results</h3>
+      <a href="{{ url_for('results') }}" class="btn btn-outline btn-sm" style="margin-left:auto;">View All</a>
+    </div>
+    <div class="card-body" style="padding:0;">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Course</th><th>Exam</th><th>Marks</th><th>Grade</th></tr></thead>
+          <tbody>
+            {% for r in results %}
+            <tr>
+              <td>{{ r.course.name if r.course else 'N/A' }}</td>
+              <td><span class="badge badge-gray">{{ r.exam_type }}</span></td>
+              <td><strong>{{ r.marks }}</strong>/100</td>
+              <td><span class="badge {% if r.grade in ['A+','A','O'] %}badge-green{% elif r.grade in ['B+','B'] %}badge-blue{% else %}badge-orange{% endif %}">{{ r.grade }}</span></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="4" style="text-align:center;color:#78909c;padding:20px;">No results available.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% if events %}
+<div class="card" style="margin-top:20px;">
+  <div class="card-header">
+    <div class="card-icon" style="background:#FFF3E0;color:#FB8C00;"><i class="fa-solid fa-calendar-star"></i></div>
+    <h3>Upcoming Events</h3>
+    <a href="{{ url_for('events') }}" class="btn btn-outline btn-sm" style="margin-left:auto;">View All</a>
+  </div>
+  <div class="card-body">
+    <div class="grid-3">
+      {% for e in events %}
+      <div class="event-card">
+        <div class="event-cover">
+          {% if e.cover_img %}<img src="{{ e.cover_img }}" alt="event"/>{% endif %}
+          <div class="event-date-badge">
+            <div class="day">{{ e.event_date.strftime('%d') }}</div>
+            <div class="mon">{{ e.event_date.strftime('%b') }}</div>
+          </div>
+        </div>
+        <div class="event-body">
+          <h3>{{ e.title }}</h3>
+          <p><i class="fa-solid fa-location-dot" style="color:#1565C0;"></i> {{ e.location or 'Campus' }}</p>
+        </div>
+        <div class="event-footer">
+          <span class="badge badge-blue">{{ e.category }}</span>
+          <form method="POST" href="{{ url_for('events') }}" style="display:inline;">
+            <button class="btn btn-primary btn-sm">Register</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

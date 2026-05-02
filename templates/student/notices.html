@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block title %}Notices - CampusConnect{% endblock %}
+{% block page_title %}Notice Board{% endblock %}
+
+{% block content %}
+
+<!-- Filter Tabs -->
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    {% for cat, icon, label in [('all','fa-layer-group','All'),('Exams','fa-file-pen','Exams'),('Placement','fa-briefcase','Placement'),('Events','fa-calendar-star','Events'),('General','fa-bell','General')] %}
+    <a href="{{ url_for('notices', category=cat) }}"
+       style="padding:8px 18px;border-radius:24px;font-size:13px;font-weight:500;text-decoration:none;display:flex;align-items:center;gap:6px;transition:all 0.2s;
+       {% if category==cat %}background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.3);
+       {% else %}background:#fff;color:#455a7a;border:1.5px solid #e2eaf4;{% endif %}">
+      <i class="fa-solid {{ icon }}"></i> {{ label }}
+    </a>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Stats Row -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;">
+  <div style="background:#fff;border-radius:14px;padding:16px 18px;border:1px solid #e2eaf4;display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;color:#1565C0;font-size:18px;">
+      <i class="fa-solid fa-bullhorn"></i></div>
+    <div>
+      <div style="font-size:22px;font-weight:700;font-family:'Sora',sans-serif;color:#1a2340;">{{ notices|length }}</div>
+      <div style="font-size:12px;color:#78909c;">Total</div>
+    </div>
+  </div>
+  <div style="background:#fff;border-radius:14px;padding:16px 18px;border:1px solid #e2eaf4;display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:#FFF3E0;display:flex;align-items:center;justify-content:center;color:#FB8C00;font-size:18px;">
+      <i class="fa-solid fa-file-pen"></i></div>
+    <div>
+      <div style="font-size:22px;font-weight:700;font-family:'Sora',sans-serif;color:#1a2340;">{{ notices|selectattr('category','equalto','Exams')|list|length }}</div>
+      <div style="font-size:12px;color:#78909c;">Exams</div>
+    </div>
+  </div>
+  <div style="background:#fff;border-radius:14px;padding:16px 18px;border:1px solid #e2eaf4;display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:#EDE7F6;display:flex;align-items:center;justify-content:center;color:#5C35A8;font-size:18px;">
+      <i class="fa-solid fa-briefcase"></i></div>
+    <div>
+      <div style="font-size:22px;font-weight:700;font-family:'Sora',sans-serif;color:#1a2340;">{{ notices|selectattr('category','equalto','Placement')|list|length }}</div>
+      <div style="font-size:12px;color:#78909c;">Placement</div>
+    </div>
+  </div>
+  <div style="background:#fff;border-radius:14px;padding:16px 18px;border:1px solid #e2eaf4;display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;color:#00897B;font-size:18px;">
+      <i class="fa-solid fa-calendar-star"></i></div>
+    <div>
+      <div style="font-size:22px;font-weight:700;font-family:'Sora',sans-serif;color:#1a2340;">{{ notices|selectattr('category','equalto','Events')|list|length }}</div>
+      <div style="font-size:12px;color:#78909c;">Events</div>
+    </div>
+  </div>
+</div>
+
+<!-- Notice Cards -->
+{% if notices %}
+<div style="display:flex;flex-direction:column;gap:14px;max-width:860px;">
+  {% for notice in notices %}
+
+  {% if notice.category=='Exams' %}
+    {% set bc='#FB8C00' %}{% set ibg='#FFF3E0' %}{% set ic='#FB8C00' %}{% set fi='fa-file-pen' %}
+  {% elif notice.category=='Placement' %}
+    {% set bc='#5C35A8' %}{% set ibg='#EDE7F6' %}{% set ic='#5C35A8' %}{% set fi='fa-briefcase' %}
+  {% elif notice.category=='Events' %}
+    {% set bc='#00897B' %}{% set ibg='#E8F5E9' %}{% set ic='#00897B' %}{% set fi='fa-calendar-star' %}
+  {% else %}
+    {% set bc='#1565C0' %}{% set ibg='#E3F2FD' %}{% set ic='#1565C0' %}{% set fi='fa-bullhorn' %}
+  {% endif %}
+
+  <div style="background:#fff;border-radius:16px;border:1px solid #e2eaf4;
+              border-left:5px solid {{ bc }};padding:22px 24px;
+              display:flex;gap:18px;align-items:flex-start;
+              box-shadow:0 2px 12px rgba(21,101,192,0.06);transition:all 0.22s;"
+       onmouseover="this.style.transform='translateX(5px)';this.style.boxShadow='0 6px 28px rgba(21,101,192,0.13)'"
+       onmouseout="this.style.transform='translateX(0)';this.style.boxShadow='0 2px 12px rgba(21,101,192,0.06)'">
+
+    <div style="width:50px;height:50px;border-radius:14px;background:{{ ibg }};
+                display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="fa-solid {{ fi }}" style="font-size:22px;color:{{ ic }};"></i>
+    </div>
+
+    <div style="flex:1;">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:8px;">
+        <h3 style="font-size:16px;font-weight:600;color:#1a2340;font-family:'Sora',sans-serif;margin:0;">
+          {{ notice.title }}
+        </h3>
+        <span style="background:{{ ibg }};color:{{ ic }};font-size:12px;font-weight:500;padding:4px 14px;border-radius:20px;">
+          {{ notice.category }}
+        </span>
+      </div>
+      <p style="color:#455a7a;font-size:14px;line-height:1.8;margin:0 0 14px;">{{ notice.content }}</p>
+      <div style="display:flex;gap:20px;font-size:12px;color:#78909c;flex-wrap:wrap;">
+        <span><i class="fa-regular fa-user" style="margin-right:5px;"></i>{{ notice.posted_by or 'Campus Admin' }}</span>
+        <span><i class="fa-regular fa-calendar" style="margin-right:5px;"></i>{{ notice.created_at.strftime('%A, %d %B %Y') }}</span>
+        <span><i class="fa-regular fa-clock" style="margin-right:5px;"></i>{{ notice.created_at.strftime('%I:%M %p') }}</span>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<div style="background:#fff;border-radius:20px;border:2px dashed #e2eaf4;padding:80px 40px;text-align:center;max-width:500px;margin:40px auto;">
+  <div style="width:80px;height:80px;background:#E3F2FD;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+    <i class="fa-solid fa-bullhorn" style="font-size:32px;color:#1565C0;opacity:0.4;"></i>
+  </div>
+  <h3 style="font-size:18px;font-weight:600;color:#1a2340;margin-bottom:8px;">No Notices Found</h3>
+  <p style="color:#78909c;font-size:14px;">
+    {% if category != 'all' %}No notices in <strong>{{ category }}</strong>.
+    <a href="{{ url_for('notices') }}" style="color:#1565C0;">View all</a>
+    {% else %}No notices posted yet. Check back later.{% endif %}
+  </p>
+</div>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,105 @@
+{% extends 'shared/base.html' %}
+{% block title %}Notice Board{% endblock %}
+{% block page_title %}Notice Board{% endblock %}
+
+{% block content %}
+
+<!-- Header -->
+<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    {% for cat in ['All','General','Exam','Placement','Holiday','Sports'] %}
+    <a href="{{ url_for('notices.index', category=cat) }}"
+       style="padding:8px 18px;border-radius:24px;font-size:13px;font-weight:500;text-decoration:none;transition:all 0.2s;
+       {% if category==cat %}background:#1565C0;color:#fff;box-shadow:0 4px 12px rgba(21,101,192,0.3);
+       {% else %}background:#fff;color:#455a7a;border:1.5px solid #e2eaf4;{% endif %}">
+      {% if cat=='Exam' %}<i class="fa-solid fa-file-pen" style="margin-right:5px;"></i>
+      {% elif cat=='Placement' %}<i class="fa-solid fa-briefcase" style="margin-right:5px;"></i>
+      {% elif cat=='Holiday' %}<i class="fa-solid fa-umbrella-beach" style="margin-right:5px;"></i>
+      {% elif cat=='Sports' %}<i class="fa-solid fa-trophy" style="margin-right:5px;"></i>
+      {% elif cat=='General' %}<i class="fa-solid fa-bell" style="margin-right:5px;"></i>
+      {% else %}<i class="fa-solid fa-layer-group" style="margin-right:5px;"></i>{% endif %}
+      {{ cat }}
+    </a>
+    {% endfor %}
+  </div>
+  {% if current_user.role in ('admin','faculty') %}
+  <a href="{{ url_for('notices.create') }}" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Post Notice</a>
+  {% endif %}
+</div>
+
+<!-- Stats -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;">
+  {% for label,icon,bg,color,count in [
+    ('Total Notices','fa-bullhorn','#E3F2FD','#1565C0', notices|length),
+    ('Urgent','fa-circle-exclamation','#FFEBEE','#E53935', notices|selectattr('is_urgent')|list|length),
+    ('Exam','fa-file-pen','#FFF3E0','#FB8C00', notices|selectattr('category','equalto','Exam')|list|length),
+    ('Placement','fa-briefcase','#EDE7F6','#5C35A8', notices|selectattr('category','equalto','Placement')|list|length)
+  ] %}
+  <div style="background:#fff;border-radius:14px;padding:16px 18px;border:1px solid #e2eaf4;display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:{{ bg }};display:flex;align-items:center;justify-content:center;color:{{ color }};font-size:18px;flex-shrink:0;">
+      <i class="fa-solid {{ icon }}"></i>
+    </div>
+    <div>
+      <div style="font-size:22px;font-weight:700;font-family:'Sora',sans-serif;color:#1a2340;">{{ count }}</div>
+      <div style="font-size:12px;color:#78909c;">{{ label }}</div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Notices List -->
+{% if notices %}
+<div style="display:flex;flex-direction:column;gap:14px;max-width:860px;">
+  {% for n in notices %}
+  {% if n.is_urgent %}{% set bc='#E53935' %}{% set ibg='#FFEBEE' %}{% set ic='#E53935' %}{% set fi='fa-circle-exclamation' %}
+  {% elif n.category=='Exam' %}{% set bc='#FB8C00' %}{% set ibg='#FFF3E0' %}{% set ic='#FB8C00' %}{% set fi='fa-file-pen' %}
+  {% elif n.category=='Placement' %}{% set bc='#5C35A8' %}{% set ibg='#EDE7F6' %}{% set ic='#5C35A8' %}{% set fi='fa-briefcase' %}
+  {% elif n.category=='Holiday' %}{% set bc='#00897B' %}{% set ibg='#E0F2F1' %}{% set ic='#00897B' %}{% set fi='fa-umbrella-beach' %}
+  {% elif n.category=='Sports' %}{% set bc='#0091EA' %}{% set ibg='#E1F5FE' %}{% set ic='#0091EA' %}{% set fi='fa-trophy' %}
+  {% else %}{% set bc='#1565C0' %}{% set ibg='#E3F2FD' %}{% set ic='#1565C0' %}{% set fi='fa-bullhorn' %}{% endif %}
+
+  <div style="background:#fff;border-radius:16px;border:1px solid #e2eaf4;border-left:5px solid {{ bc }};padding:20px 24px;display:flex;gap:18px;align-items:flex-start;box-shadow:0 2px 12px rgba(21,101,192,0.06);transition:all 0.22s;"
+       onmouseover="this.style.transform='translateX(4px)';this.style.boxShadow='0 6px 24px rgba(21,101,192,0.12)'"
+       onmouseout="this.style.transform='translateX(0)';this.style.boxShadow='0 2px 12px rgba(21,101,192,0.06)'">
+    <div style="width:48px;height:48px;border-radius:14px;background:{{ ibg }};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <i class="fa-solid {{ fi }}" style="font-size:20px;color:{{ ic }};"></i>
+    </div>
+    <div style="flex:1;">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+          <h3 style="font-size:16px;font-weight:600;color:#1a2340;font-family:'Sora',sans-serif;margin:0;">{{ n.title }}</h3>
+          {% if n.is_urgent %}
+          <span style="background:#FFEBEE;color:#E53935;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;border:1px solid #ffcdd2;">URGENT</span>
+          {% endif %}
+        </div>
+        <span style="background:{{ ibg }};color:{{ ic }};font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;flex-shrink:0;">{{ n.category }}</span>
+      </div>
+      <p style="color:#455a7a;font-size:14px;line-height:1.75;margin:0 0 12px;">{{ n.content }}</p>
+      <div style="display:flex;gap:18px;font-size:12px;color:#78909c;flex-wrap:wrap;">
+        <span><i class="fa-regular fa-user" style="margin-right:4px;"></i>{{ n.author.full_name if n.author else 'Campus Admin' }}</span>
+        <span><i class="fa-regular fa-calendar" style="margin-right:4px;"></i>{{ n.created_at.strftime('%A, %d %B %Y') }}</span>
+        <span><i class="fa-regular fa-clock" style="margin-right:4px;"></i>{{ n.created_at.strftime('%I:%M %p') }}</span>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% else %}
+<div style="background:#fff;border-radius:20px;border:2px dashed #e2eaf4;padding:80px 40px;text-align:center;max-width:500px;margin:40px auto;">
+  <div style="width:80px;height:80px;background:#E3F2FD;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+    <i class="fa-solid fa-bullhorn" style="font-size:32px;color:#1565C0;opacity:0.5;"></i>
+  </div>
+  <h3 style="font-size:18px;font-weight:600;color:#1a2340;margin-bottom:8px;">No Notices Yet</h3>
+  <p style="color:#78909c;font-size:14px;">
+    {% if category != 'All' %}No notices in <strong>{{ category }}</strong>.
+    <a href="{{ url_for('notices.index') }}" style="color:#1565C0;">View all</a>
+    {% else %}No notices posted yet. Check back later.{% endif %}
+  </p>
+  {% if current_user.role in ('admin','faculty') %}
+  <a href="{{ url_for('notices.create') }}" class="btn btn-primary" style="margin-top:20px;"><i class="fa-solid fa-plus"></i> Post First Notice</a>
+  {% endif %}
+</div>
+{% endif %}
+
+{% endblock %}

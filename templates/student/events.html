@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Events - CampusConnect{% endblock %}
+{% block page_title %}Campus Events{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+ 
+{% block content %}
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+  {% if events %}
+    {% for event in events %}
+    <div class="event-card">
+      <div class="event-emoji">
+        {% if 'hack' in event.category.lower() %}🎮
+        {% elif 'tech' in event.category.lower() %}🎤
+        {% elif 'sport' in event.category.lower() %}⚽
+        {% elif 'cultural' in event.category.lower() %}🎨
+        {% else %}🎉{% endif %}
+      </div>
+      <div class="event-title">{{ event.title }}</div>
+      <div class="event-date">{{ event.event_date.strftime('%b %d, %Y') }} • {{ event.venue }}</div>
+      <div style="margin-top: 8px;"><span class="badge badge-blue">Register →</span></div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div style="grid-column: 1/-1; padding: 16px; text-align: center; color: #64748b;">No events scheduled</div>
+  {% endif %}
+</div>
+{% endblock %}

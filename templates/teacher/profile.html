@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}Teacher Profile{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+{% block content %}
+
+<div style="background:linear-gradient(135deg,#0D47A1,#1565C0 60%,#0091EA);border-radius:20px;padding:36px;color:#fff;margin-bottom:24px;position:relative;overflow:hidden;">
+  <div style="position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.06);"></div>
+  <div style="display:flex;align-items:center;gap:28px;position:relative;z-index:1;flex-wrap:wrap;">
+    <div style="width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.15);border:3px solid rgba(255,255,255,0.3);display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:700;">
+      {{ current_user.name[0].upper() }}
+    </div>
+    <div style="flex:1;">
+      <h2 style="font-size:26px;font-weight:700;margin:0 0 6px;">{{ current_user.name }}</h2>
+      <p style="opacity:0.7;font-size:14px;margin:0 0 14px;"><i class="fa-solid fa-envelope" style="margin-right:6px;"></i>{{ current_user.email }}</p>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:4px 14px;font-size:12px;"><i class="fa-solid fa-building-columns" style="margin-right:5px;"></i>Computer Science</span>
+        <span style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:4px 14px;font-size:12px;"><i class="fa-solid fa-graduation-cap" style="margin-right:5px;"></i>Faculty</span>
+        <span style="background:rgba(0,176,255,0.25);border:1px solid rgba(0,176,255,0.4);border-radius:20px;padding:4px 14px;font-size:12px;"><i class="fa-solid fa-circle" style="font-size:7px;margin-right:5px;"></i>Active</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="stat-grid" style="margin-bottom:24px;">
+  <div class="stat-card blue">
+    <div class="stat-icon blue"><i class="fa-solid fa-user-graduate"></i></div>
+    <div class="stat-info"><p class="stat-label">Total Students</p><p class="stat-value">{{ total_students }}</p></div>
+  </div>
+  <div class="stat-card green">
+    <div class="stat-icon green"><i class="fa-solid fa-file-pen"></i></div>
+    <div class="stat-info"><p class="stat-label">Assignments</p><p class="stat-value">{{ total_assignments }}</p></div>
+  </div>
+  <div class="stat-card orange">
+    <div class="stat-icon orange"><i class="fa-solid fa-bullhorn"></i></div>
+    <div class="stat-info"><p class="stat-label">Notices Posted</p><p class="stat-value">{{ total_notices }}</p></div>
+  </div>
+  <div class="stat-card purple">
+    <div class="stat-icon purple"><i class="fa-solid fa-star"></i></div>
+    <div class="stat-info"><p class="stat-label">Experience</p><p class="stat-value">8 yrs</p></div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon" style="background:#E3F2FD;color:#1565C0;"><i class="fa-solid fa-user"></i></div>
+      <h3>Personal Information</h3>
+    </div>
+    <div class="card-body">
+      <table style="width:100%;font-size:14px;">
+        <tr><td style="color:#78909c;padding:10px 0;width:40%;border-bottom:1px solid #f0f4f9;">Full Name</td><td style="font-weight:500;padding:10px 0;border-bottom:1px solid #f0f4f9;">{{ current_user.name }}</td></tr>
+        <tr><td style="color:#78909c;padding:10px 0;border-bottom:1px solid #f0f4f9;">Email</td><td style="padding:10px 0;border-bottom:1px solid #f0f4f9;">{{ current_user.email }}</td></tr>
+        <tr><td style="color:#78909c;padding:10px 0;border-bottom:1px solid #f0f4f9;">Role</td><td style="padding:10px 0;border-bottom:1px solid #f0f4f9;"><span class="badge badge-blue">{{ current_user.role | capitalize }}</span></td></tr>
+        <tr><td style="color:#78909c;padding:10px 0;border-bottom:1px solid #f0f4f9;">Department</td><td style="font-weight:500;padding:10px 0;border-bottom:1px solid #f0f4f9;">Computer Science</td></tr>
+        <tr><td style="color:#78909c;padding:10px 0;border-bottom:1px solid #f0f4f9;">Qualification</td><td style="font-weight:500;padding:10px 0;border-bottom:1px solid #f0f4f9;">PhD</td></tr>
+        <tr><td style="color:#78909c;padding:10px 0;">Joined</td><td style="font-weight:500;padding:10px 0;">{{ current_user.created_at.strftime('%d %B %Y') if current_user.created_at else 'N/A' }}</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:20px;">
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:#E8F5E9;color:#00897B;"><i class="fa-solid fa-book-open"></i></div><h3>Subjects Teaching</h3></div>
+      <div class="card-body">
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          {% for subj in ['Data Structures','Database Systems','Web Development','Algorithms','Machine Learning'] %}
+          <span style="background:#E3F2FD;color:#1565C0;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:500;border:1px solid #BBDEFB;">{{ subj }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-icon" style="background:#FFF3E0;color:#FB8C00;"><i class="fa-solid fa-bolt"></i></div><h3>Quick Actions</h3></div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <a href="{{ url_for('teacher_attendance') }}" class="btn btn-outline" style="justify-content:flex-start;"><i class="fa-solid fa-clipboard-check"></i> Mark Attendance</a>
+          <a href="{{ url_for('teacher_results') }}" class="btn btn-outline" style="justify-content:flex-start;"><i class="fa-solid fa-trophy"></i> Add Results</a>
+          <a href="{{ url_for('teacher_assignments') }}" class="btn btn-outline" style="justify-content:flex-start;"><i class="fa-solid fa-file-pen"></i> Assign Work</a>
+          <a href="{{ url_for('teacher_notices') }}" class="btn btn-primary" style="justify-content:flex-start;"><i class="fa-solid fa-bullhorn"></i> Post Notice</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:20px;">
+  <div class="card-header">
+    <div class="card-icon" style="background:#EDE7F6;color:#6A1B9A;"><i class="fa-solid fa-clock-rotate-left"></i></div>
+    <h3>Recent Notices Posted</h3>
+    <a href="{{ url_for('teacher_notices') }}" class="btn btn-primary btn-sm" style="margin-left:auto;">+ Post New</a>
+  </div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Title</th><th>Category</th><th>Date</th></tr></thead>
+      <tbody>
+        {% for n in recent_notices %}
+        <tr>
+          <td style="font-weight:500;">{{ n.title }}</td>
+          <td><span class="badge badge-blue">{{ n.category }}</span></td>
+          <td style="color:#78909c;">{{ n.date.strftime('%d %b %Y') if n.date else '' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" style="text-align:center;color:#78909c;padding:24px;">No notices posted yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Fee Detail{% endblock %}
+{% block content %}
+<div class="card">
+  <div class="card-title">Fee Detail</div>
+  <table>
+    <tr><th>Student</th><td>{{ student.user.name if student and student.user else 'Unknown' }}</td></tr>
+    <tr><th>Description</th><td>{{ fee.description }}</td></tr>
+    <tr><th>Amount</th><td>{{ fee.amount }}</td></tr>
+    <tr><th>Status</th><td>{{ fee.status }}</td></tr>
+    <tr><th>Paid On</th><td>{{ fee.paid_on or '—' }}</td></tr>
+  </table>
+  <br/>
+  <form method="post" action="/admin/fees/mark_paid/{{ fee.id }}">
+    <input type="hidden" name="_csrf_token" value="{{ csrf_token }}">
+    {% if fee.status != 'Paid' %}
+    <button class="btn">Mark Paid</button>
+    {% endif %}
+    <a class="btn" href="/admin">Back</a>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block title %}Library - CampusConnect{% endblock %}
+{% block page_title %}Library{% endblock %}
+
+{% block content %}
+
+<!-- Search Bar -->
+<div style="display:flex;gap:12px;margin-bottom:24px;">
+  <form method="GET" action="{{ url_for('library') }}" style="flex:1;display:flex;gap:10px;">
+    <div style="flex:1;position:relative;">
+      <i class="fa-solid fa-magnifying-glass" style="position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#93a9c7;"></i>
+      <input type="text" name="q" value="{{ search }}" placeholder="Search books by title, author..."
+             style="width:100%;padding:11px 14px 11px 40px;border:1.5px solid #e2eaf4;border-radius:10px;font-size:14px;outline:none;font-family:inherit;"/>
+    </div>
+    <button type="submit" style="background:#1565C0;color:#fff;border:none;padding:11px 22px;border-radius:10px;font-size:14px;font-weight:500;cursor:pointer;">
+      Search
+    </button>
+    {% if search %}
+    <a href="{{ url_for('library') }}" style="padding:11px 18px;border-radius:10px;border:1.5px solid #e2eaf4;background:#fff;color:#455a7a;font-size:14px;text-decoration:none;">
+      Clear
+    </a>
+    {% endif %}
+  </form>
+</div>
+
+<!-- Stats -->
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:24px;">
+  <div style="background:#fff;border-radius:14px;padding:16px 18px;border:1px solid #e2eaf4;display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:#E3F2FD;display:flex;align-items:center;justify-content:center;color:#1565C0;font-size:18px;">
+      <i class="fa-solid fa-book"></i></div>
+    <div>
+      <div style="font-size:22px;font-weight:700;font-family:'Sora',sans-serif;color:#1a2340;">{{ books|length }}</div>
+      <div style="font-size:12px;color:#78909c;">Total Books</div>
+    </div>
+  </div>
+  <div style="background:#fff;border-radius:14px;padding:16px 18px;border:1px solid #e2eaf4;display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:#E8F5E9;display:flex;align-items:center;justify-content:center;color:#00897B;font-size:18px;">
+      <i class="fa-solid fa-check-circle"></i></div>
+    <div>
+      <div style="font-size:22px;font-weight:700;font-family:'Sora',sans-serif;color:#1a2340;">{{ books|selectattr('available','gt',0)|list|length }}</div>
+      <div style="font-size:12px;color:#78909c;">Available</div>
+    </div>
+  </div>
+  <div style="background:#fff;border-radius:14px;padding:16px 18px;border:1px solid #e2eaf4;display:flex;align-items:center;gap:12px;">
+    <div style="width:42px;height:42px;border-radius:12px;background:#FFF3E0;display:flex;align-items:center;justify-content:center;color:#FB8C00;font-size:18px;">
+      <i class="fa-solid fa-clock-rotate-left"></i></div>
+    <div>
+      <div style="font-size:22px;font-weight:700;font-family:'Sora',sans-serif;color:#1a2340;">{{ borrowed|length }}</div>
+      <div style="font-size:12px;color:#78909c;">Borrowed by You</div>
+    </div>
+  </div>
+</div>
+
+<!-- Borrowed Books -->
+{% if borrowed %}
+<div style="background:#fff;border-radius:16px;border:1px solid #e2eaf4;margin-bottom:24px;overflow:hidden;">
+  <div style="padding:16px 22px;border-bottom:1px solid #e2eaf4;display:flex;align-items:center;gap:10px;">
+    <div style="width:36px;height:36px;border-radius:10px;background:#FFF3E0;display:flex;align-items:center;justify-content:center;color:#FB8C00;">
+      <i class="fa-solid fa-clock-rotate-left"></i></div>
+    <h3 style="font-size:15px;font-weight:600;margin:0;">Currently Borrowed</h3>
+  </div>
+  <div style="overflow-x:auto;">
+    <table style="width:100%;border-collapse:collapse;font-size:14px;">
+      <thead>
+        <tr style="background:#f8fafd;">
+          <th style="padding:12px 16px;text-align:left;font-size:12px;color:#607898;font-weight:600;text-transform:uppercase;border-bottom:1px solid #e2eaf4;">Book</th>
+          <th style="padding:12px 16px;text-align:left;font-size:12px;color:#607898;font-weight:600;text-transform:uppercase;border-bottom:1px solid #e2eaf4;">Author</th>
+          <th style="padding:12px 16px;text-align:left;font-size:12px;color:#607898;font-weight:600;text-transform:uppercase;border-bottom:1px solid #e2eaf4;">Due Date</th>
+          <th style="padding:12px 16px;text-align:left;font-size:12px;color:#607898;font-weight:600;text-transform:uppercase;border-bottom:1px solid #e2eaf4;">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for record in borrowed %}
+        <tr style="border-bottom:1px solid #f0f4f9;">
+          <td style="padding:13px 16px;font-weight:500;color:#1a2340;">{{ record.book.title if record.book else 'N/A' }}</td>
+          <td style="padding:13px 16px;color:#607898;">{{ record.book.author if record.book else 'N/A' }}</td>
+          <td style="padding:13px 16px;color:#607898;">{{ record.due_date.strftime('%d %b %Y') if record.due_date else 'N/A' }}</td>
+          <td style="padding:13px 16px;">
+            <span style="background:#E8F5E9;color:#00897B;font-size:12px;font-weight:500;padding:4px 12px;border-radius:20px;">Borrowed</span>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endif %}
+
+<!-- Book Grid -->
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px;">
+  {% for book in books %}
+  <div style="background:#fff;border-radius:16px;border:1px solid #e2eaf4;overflow:hidden;
+              box-shadow:0 2px 12px rgba(21,101,192,0.06);transition:all 0.22s;"
+       onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 8px 28px rgba(21,101,192,0.14)'"
+       onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 2px 12px rgba(21,101,192,0.06)'">
+
+    <!-- Book Cover -->
+    <div style="height:160px;background:linear-gradient(135deg,#0D47A1,#1976D2);
+                display:flex;align-items:center;justify-content:center;position:relative;">
+      <i class="fa-solid fa-book-open" style="font-size:48px;color:rgba(255,255,255,0.25);"></i>
+      <div style="position:absolute;top:10px;right:10px;">
+        {% if book.available > 0 %}
+        <span style="background:#00897B;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;">
+          Available
+        </span>
+        {% else %}
+        <span style="background:#E53935;color:#fff;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;">
+          Unavailable
+        </span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Book Info -->
+    <div style="padding:14px;">
+      <div style="font-size:14px;font-weight:600;color:#1a2340;margin-bottom:4px;line-height:1.3;">{{ book.title }}</div>
+      <div style="font-size:12px;color:#78909c;margin-bottom:8px;">{{ book.author }}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <span style="background:#E3F2FD;color:#1565C0;font-size:11px;padding:3px 10px;border-radius:20px;">{{ book.category }}</span>
+        <span style="font-size:12px;color:#78909c;">{{ book.available }}/{{ book.copies }} copies</span>
+      </div>
+
+      <!-- Availability Bar -->
+      <div style="height:4px;background:#e2eaf4;border-radius:4px;overflow:hidden;margin-bottom:12px;">
+        <div style="height:100%;border-radius:4px;background:{% if book.available > 0 %}#00897B{% else %}#E53935{% endif %};
+                    width:{% if book.copies and book.copies > 0 %}{{ (book.available / book.copies * 100)|int }}{% else %}0{% endif %}%;"></div>
+      </div>
+
+      {% if book.available > 0 %}
+      <a href="#" style="display:block;text-align:center;background:#1565C0;color:#fff;padding:8px;border-radius:8px;font-size:13px;font-weight:500;text-decoration:none;">
+        <i class="fa-solid fa-hand-holding-heart" style="margin-right:6px;"></i>Borrow
+      </a>
+      {% else %}
+      <div style="text-align:center;background:#f0f4f9;color:#78909c;padding:8px;border-radius:8px;font-size:13px;">
+        Not Available
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <div style="grid-column:1/-1;text-align:center;padding:60px;background:#fff;border-radius:16px;border:2px dashed #e2eaf4;">
+    <i class="fa-solid fa-book" style="font-size:48px;color:#1565C0;opacity:0.2;display:block;margin-bottom:16px;"></i>
+    <h3 style="color:#1a2340;margin-bottom:8px;">No Books Found</h3>
+    <p style="color:#78909c;">{% if search %}No results for "{{ search }}".{% else %}No books in library yet.{% endif %}</p>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

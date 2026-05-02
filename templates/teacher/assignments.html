@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Assignments - CampusConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',sans-serif;background:#f0f4f9;color:#1a2340;min-height:100vh}
+.wrap{max-width:1100px;margin:0 auto;padding:32px 20px}
+.top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+h1{font-size:26px;font-weight:800;}
+.subtitle{color:#78909c;font-size:14px;margin-top:3px;}
+.back-btn{display:flex;align-items:center;gap:8px;color:#607898;text-decoration:none;font-size:14px;font-weight:500;padding:9px 18px;background:#fff;border-radius:10px;border:1px solid #e2eaf4;transition:.2s;}
+.back-btn:hover{background:#f0f4f9;color:#1565C0;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+.card{background:#fff;border-radius:18px;border:1px solid #e2eaf4;box-shadow:0 2px 16px rgba(21,101,192,0.07);overflow:hidden;}
+.card-head{padding:18px 22px;border-bottom:1px solid #f0f4f9;display:flex;align-items:center;gap:10px;}
+.card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.card-head h2{font-size:16px;font-weight:700;}
+.card-body{padding:22px;}
+.form-group{margin-bottom:16px;}
+.form-label{display:block;font-size:11px;font-weight:700;color:#78909c;text-transform:uppercase;letter-spacing:.07em;margin-bottom:7px;}
+.form-control{width:100%;padding:11px 14px;background:#f8fafd;border:1.5px solid #e2eaf4;border-radius:10px;font-size:14px;color:#1a2340;font-family:'Outfit',sans-serif;outline:none;transition:.2s;}
+.form-control:focus{border-color:#1565C0;background:#fff;box-shadow:0 0 0 3px rgba(21,101,192,0.1);}
+textarea.form-control{min-height:90px;resize:vertical;}
+select.form-control{cursor:pointer;}
+.students-list{max-height:220px;overflow-y:auto;border:1.5px solid #e2eaf4;border-radius:10px;background:#f8fafd;}
+.student-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid #f0f4f9;cursor:pointer;transition:.15s;}
+.student-item:last-child{border-bottom:none;}
+.student-item:hover{background:#E3F2FD;}
+.student-item input{accent-color:#1565C0;width:16px;height:16px;cursor:pointer;flex-shrink:0;}
+.student-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#1565C0,#42a5f5);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;flex-shrink:0;}
+.student-name{font-size:13px;font-weight:600;color:#1a2340;}
+.student-roll{font-size:11px;color:#78909c;}
+.select-all-btn{display:flex;align-items:center;gap:6px;padding:8px 14px;font-size:12px;font-weight:600;color:#1565C0;cursor:pointer;background:#E3F2FD;border:none;font-family:'Outfit',sans-serif;width:100%;border-radius:8px;margin-bottom:8px;transition:.2s;}
+.select-all-btn:hover{background:#BBDEFB;}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 22px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none;font-family:'Outfit',sans-serif;transition:.22s;text-decoration:none;}
+.btn-primary{background:linear-gradient(135deg,#1565C0,#1976D2);color:#fff;box-shadow:0 4px 14px rgba(21,101,192,0.3);width:100%;justify-content:center;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(21,101,192,0.4);}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-green{background:#E0F2F1;color:#00897B;}
+.badge-orange{background:#FFF3E0;color:#FB8C00;}
+.badge-red{background:#FFEBEE;color:#E53935;}
+.badge-blue{background:#E3F2FD;color:#1565C0;}
+.alert{padding:12px 16px;border-radius:10px;margin-bottom:18px;font-size:13px;font-weight:500;display:flex;align-items:center;gap:8px;}
+.alert-success{background:#E0F2F1;border:1px solid #80CBC4;color:#00695C;}
+.alert-danger{background:#FFEBEE;border:1px solid #EF9A9A;color:#C62828;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{padding:11px 14px;text-align:left;font-size:11px;color:#607898;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:#f8fafd;border-bottom:1px solid #e2eaf4;}
+tbody td{padding:12px 14px;border-bottom:1px solid #f0f4f9;color:#1a2340;vertical-align:middle;}
+tbody tr:hover{background:#f0f6ff;}
+tbody tr:last-child td{border-bottom:none;}
+.filter-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.filter-btn{padding:6px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid #e2eaf4;background:#fff;color:#607898;font-family:'Outfit',sans-serif;transition:.2s;}
+.filter-btn.active{background:#1565C0;color:#fff;border-color:#1565C0;}
+.empty-state{text-align:center;padding:50px 20px;color:#78909c;}
+.empty-state i{font-size:44px;opacity:.2;display:block;margin-bottom:14px;}
+.count-badge{margin-left:auto;background:#E3F2FD;color:#1565C0;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+@media(max-width:700px){.grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top-bar">
+    <div>
+      <h1><i class="fa-solid fa-file-pen" style="color:#FB8C00;margin-right:10px;"></i>Assignments</h1>
+      <div class="subtitle">Create and manage student assignments — notifications sent instantly</div>
+    </div>
+    <a href="{{ url_for('teacher_dashboard') }}" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Back to Dashboard
+    </a>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}{% for cat,msg in messages %}
+    <div class="alert alert-{{ cat }}"><i class="fa-solid fa-circle-check"></i> {{ msg }}</div>
+    {% endfor %}{% endif %}
+  {% endwith %}
+
+  <div class="grid">
+
+    <!-- LEFT: Create Assignment -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#FFF3E0;color:#FB8C00;"><i class="fa-solid fa-plus"></i></div>
+        <h2>Create New Assignment</h2>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('teacher_assignments') }}" id="asgn-form">
+
+          <div class="form-group">
+            <label class="form-label">Assignment Title</label>
+            <input type="text" name="title" class="form-control"
+                   placeholder="e.g. Tree Traversal Problems" required/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Subject</label>
+            <select name="subject" class="form-control" required>
+              <option value="">— Select Subject —</option>
+              <option>Data Structures</option>
+              <option>Database Systems</option>
+              <option>Web Development</option>
+              <option>Machine Learning</option>
+              <option>Algorithms</option>
+              <option>Operating Systems</option>
+              <option>Computer Networks</option>
+              <option>Mathematics</option>
+              <option>Physics</option>
+              <option>Other</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Description (Optional)</label>
+            <textarea name="description" class="form-control"
+                      placeholder="Describe what students need to do..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Due Date</label>
+            <input type="date" name="due_date" class="form-control" id="due-date" required/>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" style="margin-bottom:8px;">
+              Assign To Students
+              <span id="selected-count" style="color:#1565C0;font-weight:700;margin-left:6px;">(0 selected)</span>
+            </label>
+            <button type="button" class="select-all-btn" onclick="toggleAll()">
+              <i class="fa-solid fa-check-double"></i> Select All / Deselect All
+            </button>
+            <div class="students-list">
+              {% for s in students %}
+              <label class="student-item">
+                <input type="checkbox" name="student_ids" value="{{ s.id }}"
+                       class="student-cb" onchange="updateCount()"/>
+                <div class="student-avatar">{{ s.user.name[0].upper() }}</div>
+                <div>
+                  <div class="student-name">{{ s.user.name }}</div>
+                  <div class="student-roll">
+                    {{ s.roll_no or 'N/A' }} &bull; Sem {{ s.semester }} &bull; {{ s.branch or '' }}
+                  </div>
+                </div>
+              </label>
+              {% else %}
+              <div style="padding:24px;text-align:center;color:#78909c;font-size:13px;">
+                <i class="fa-solid fa-user-slash" style="display:block;font-size:24px;opacity:.3;margin-bottom:8px;"></i>
+                No students registered yet.
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="submit-btn">
+            <i class="fa-solid fa-paper-plane"></i>
+            Assign to Selected Students
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- RIGHT: All Assignments -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon" style="background:#E3F2FD;color:#1565C0;"><i class="fa-solid fa-list-check"></i></div>
+        <h2>All Assignments</h2>
+        <span class="count-badge">{{ assignments|length }} total</span>
+      </div>
+      <div class="card-body" style="padding:16px;">
+
+        <div class="filter-row">
+          <button class="filter-btn active" onclick="filterAsgn('all',this)">
+            <i class="fa-solid fa-layer-group" style="margin-right:4px;"></i>All
+          </button>
+          <button class="filter-btn" onclick="filterAsgn('Pending',this)">
+            <i class="fa-solid fa-clock" style="margin-right:4px;"></i>Pending
+          </button>
+          <button class="filter-btn" onclick="filterAsgn('Submitted',this)">
+            <i class="fa-solid fa-check" style="margin-right:4px;"></i>Submitted
+          </button>
+          <button class="filter-btn" onclick="filterAsgn('Overdue',this)">
+            <i class="fa-solid fa-triangle-exclamation" style="margin-right:4px;"></i>Overdue
+          </button>
+        </div>
+
+        {% if assignments %}
+        <div style="overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th>Assignment</th>
+                <th>Student</th>
+                <th>Due Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="asgn-table">
+              {% for a in assignments %}
+              {% set is_overdue = a.due_date and a.due_date < now and a.status != 'Submitted' %}
+              <tr data-status="{{ 'Overdue' if is_overdue else a.status }}">
+                <td>
+                  <div style="font-weight:600;color:#1a2340;margin-bottom:2px;">{{ a.title }}</div>
+                  <div style="font-size:11px;color:#78909c;"><i class="fa-solid fa-book" style="margin-right:3px;"></i>{{ a.subject }}</div>
+                </td>
+                <td>
+                  <div style="display:flex;align-items:center;gap:7px;">
+                    <div style="width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,#1565C0,#42a5f5);display:flex;align-items:center;justify-content:center;color:#fff;font-size:10px;font-weight:700;flex-shrink:0;">
+                      {{ a.student.user.name[0].upper() if a.student else '?' }}
+                    </div>
+                    <span style="font-size:12px;font-weight:500;">{{ a.student.user.name if a.student else '—' }}</span>
+                  </div>
+                </td>
+                <td>
+                  <div style="font-size:12px;color:{% if is_overdue %}#E53935{% else %}#607898{% endif %};font-weight:{% if is_overdue %}600{% else %}400{% endif %};">
+                    {% if a.due_date %}
+                      <i class="fa-regular fa-calendar" style="margin-right:3px;"></i>
+                      {{ a.due_date.strftime('%d %b %Y') }}
+                    {% else %}—{% endif %}
+                  </div>
+                </td>
+                <td>
+                  {% if a.status == 'Submitted' %}
+                    <span class="badge badge-green">
+                      <i class="fa-solid fa-check" style="font-size:9px;margin-right:3px;"></i>Submitted
+                    </span>
+                  {% elif is_overdue %}
+                    <span class="badge badge-red">
+                      <i class="fa-solid fa-triangle-exclamation" style="font-size:9px;margin-right:3px;"></i>Overdue
+                    </span>
+                  {% else %}
+                    <span class="badge badge-orange">
+                      <i class="fa-solid fa-clock" style="font-size:9px;margin-right:3px;"></i>Pending
+                    </span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        {% else %}
+        <div class="empty-state">
+          <i class="fa-solid fa-file-pen"></i>
+          <p style="font-size:15px;font-weight:700;margin-bottom:6px;">No assignments yet</p>
+          <p style="font-size:13px;">Use the form on the left to create your first assignment.</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Set min date to today
+document.getElementById('due-date').min = new Date().toISOString().split('T')[0];
+
+// Toggle all students
+function toggleAll() {
+  const cbs = document.querySelectorAll('.student-cb');
+  const allChecked = [...cbs].every(c => c.checked);
+  cbs.forEach(c => c.checked = !allChecked);
+  updateCount();
+}
+
+// Update selected count
+function updateCount() {
+  const count = document.querySelectorAll('.student-cb:checked').length;
+  document.getElementById('selected-count').textContent = `(${count} selected)`;
+}
+
+// Filter assignments table
+function filterAsgn(status, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#asgn-table tr').forEach(row => {
+    if (status === 'all') {
+      row.style.display = '';
+    } else {
+      row.style.display = row.dataset.status === status ? '' : 'none';
+    }
+  });
+}
+
+// Loading state on submit
+document.getElementById('asgn-form').addEventListener('submit', function(e) {
+  const count = document.querySelectorAll('.student-cb:checked').length;
+  if (count === 0) {
+    e.preventDefault();
+    alert('Please select at least one student!');
+    return;
+  }
+  const btn = document.getElementById('submit-btn');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Assigning...';
+  btn.disabled = true;
+});
+</script>
+</body>
+</html>

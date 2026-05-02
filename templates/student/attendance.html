@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Attendance - CampusConnect{% endblock %}
+{% block page_title %}Attendance Tracker{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">{% endblock %}
+ 
+{% block content %}
+<div class="stats" style="grid-template-columns: repeat(3, 1fr)">
+  <div class="stat-card">
+    <div class="stat-label">Overall</div>
+    <div class="stat-val" style="color: #1a56db">87%</div>
+    <div class="stat-sub" style="color: #10b981">Above 75% ✓</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Present Days</div>
+    <div class="stat-val">68</div>
+    <div class="stat-sub">of 78 total</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Absent Days</div>
+    <div class="stat-val" style="color: #ef4444">10</div>
+    <div class="stat-sub" style="color: #f59e0b">2 medical leave</div>
+  </div>
+</div>
+ 
+<div class="card">
+  <div class="card-title">Subject-wise Attendance</div>
+  <table>
+    <tr>
+      <th>Subject</th>
+      <th>Held</th>
+      <th>Present</th>
+      <th>Attendance</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td>Data Structures</td>
+      <td>32</td>
+      <td>29</td>
+      <td><b>90.6%</b></td>
+      <td><span class="badge badge-green">Safe</span></td>
+    </tr>
+    <tr>
+      <td>Operating Systems</td>
+      <td>28</td>
+      <td>24</td>
+      <td><b>85.7%</b></td>
+      <td><span class="badge badge-green">Safe</span></td>
+    </tr>
+    <tr>
+      <td>DBMS</td>
+      <td>30</td>
+      <td>25</td>
+      <td><b>83.3%</b></td>
+      <td><span class="badge badge-green">Safe</span></td>
+    </tr>
+    <tr>
+      <td>Computer Networks</td>
+      <td>26</td>
+      <td>19</td>
+      <td><b>73.1%</b></td>
+      <td><span class="badge badge-red">Low</span></td>
+    </tr>
+    <tr>
+      <td>Maths IV</td>
+      <td>20</td>
+      <td>18</td>
+      <td><b>90%</b></td>
+      <td><span class="badge badge-green">Safe</span></td>
+    </tr>
+  </table>
+</div>
+{% endblock %}

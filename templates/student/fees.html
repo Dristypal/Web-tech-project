@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Fee Payment - CampusConnect{% endblock %}
+{% block page_title %}Fee Management{% endblock %}
+ 
+{% block content %}
+<div class="stats" style="grid-template-columns: repeat(3, 1fr)">
+  <div class="stat-card">
+    <div class="stat-label">Total Fee</div>
+    <div class="stat-val">₹85,000</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Paid</div>
+    <div class="stat-val" style="color: #10b981">₹85,000</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Status</div>
+    <div class="stat-val" style="color: #10b981; font-size: 14px;">✓ Cleared</div>
+  </div>
+</div>
+ 
+<div class="card">
+  <div class="card-title">Payment History</div>
+  <table>
+    <tr>
+      <th>Receipt No</th>
+      <th>Description</th>
+      <th>Amount</th>
+      <th>Date</th>
+      <th>Status</th>
+    </tr>
+    <tr>
+      <td>REC-2401</td>
+      <td>Tuition Fee Sem 4</td>
+      <td><b>₹45,000</b></td>
+      <td>10 Jan 2025</td>
+      <td><span class="badge badge-green">Paid</span></td>
+    </tr>
+    <tr>
+      <td>REC-2402</td>
+      <td>Hostel Fee</td>
+      <td><b>₹25,000</b></td>
+      <td>10 Jan 2025</td>
+      <td><span class="badge badge-green">Paid</span></td>
+    </tr>
+    <tr>
+      <td>REC-2403</td>
+      <td>Exam Fee</td>
+      <td><b>₹5,000</b></td>
+      <td>15 Jan 2025</td>
+      <td><span class="badge badge-green">Paid</span></td>
+    </tr>
+    <tr>
+      <td>REC-2404</td>
+      <td>Library Fee</td>
+      <td><b>₹1,000</b></td>
+      <td>15 Jan 2025</td>
+      <td><span class="badge badge-green">Paid</span></td>
+    </tr>
+  </table>
+</div>
+{% endblock %}

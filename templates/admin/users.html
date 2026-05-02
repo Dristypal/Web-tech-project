@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Manage Users - Admin{% endblock %}
+{% block page_title %}User Management{% endblock %}
+
+{% block content %}
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+    <h3 style="margin:0">Users</h3>
+    <form method="get" style="margin:0">
+      <select name="role" onchange="this.form.submit()">
+        <option value="all" {% if role=='all' %}selected{% endif %}>All</option>
+        <option value="student" {% if role=='student' %}selected{% endif %}>Students</option>
+        <option value="teacher" {% if role=='teacher' %}selected{% endif %}>Teachers</option>
+        <option value="admin" {% if role=='admin' %}selected{% endif %}>Admins</option>
+      </select>
+    </form>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ u.name }}</td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.role }}</td>
+        <td>
+          <form method="post" action="{{ url_for('delete_user', uid=u.id) }}" style="display:inline" onsubmit="return confirm('Delete user?');">
+            <button class="btn btn-danger" type="submit">Delete</button>
+          </form>
+          {% if u.role != 'admin' %}
+          <form method="post" action="{{ url_for('admin_users') }}" style="display:inline; margin-left:8px;">
+            <input type="hidden" name="promote_id" value="{{ u.id }}" />
+            <select name="new_role">
+              <option value="student" {% if u.role=='student' %}selected{% endif %}>Student</option>
+              <option value="teacher" {% if u.role=='teacher' %}selected{% endif %}>Teacher</option>
+              <option value="admin">Admin</option>
+            </select>
+            <button class="btn btn-primary" type="submit">Change</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
