@@ -37,3 +37,16 @@ Hosted on AWS EC2 with HTTPS SSL security.
 ## 👨‍💻 Developed By
 
 Dristy Pal
+## 📷 Screenshots
+
+### Login Page
+![Login](screenshots/login.png)
+
+### Student Dashboard
+![Student Dashboard](screenshots/student.png)
+
+### Teacher Dashboard
+![Teacher Dashboard](screenshots/teacher.png)
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
